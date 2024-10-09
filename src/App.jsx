@@ -1,27 +1,18 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import Title from "./Title.jsx";
-import Entry from "./Entry.jsx";
-import Info from "./Info.jsx";
+import { useState } from 'react';
+import TodoList from './TodoList'
 
 export default function App() {
-  const [name, setName] = useState("");
-  const [data, setData] = useState("");
-
-  useEffect(() => {
-    const pokemon = encodeURIComponent(name.toLowerCase());
-    const url = `https://pokeapi.co/api/v2/pokemon/${pokemon}/`;
-    fetch(url)
-      .then((r) => r.json())
-      .then((r) => setData(r))
-      .catch((e) => setData(`${e}`));
-  }, [name]);
-
+  const [todos, setTodos] = useState([
+    {id: 1, content: 'Meet Masao for Udon'},
+    {id: 2, content: 'Fix up these horrible React notes'},
+  ]);
+  function deleteTodo(id) {
+    setTodos(todos => todos.filter(todo => todo.id !== id));
+  }
   return (
     <div className="App">
-      <Title text="Poké Finder" />
-      <Entry action={setName} />
-      <Info name={name} data={data} />
+      <h1>Things To Do</h1>
+      <TodoList todos={todos} deleter={deleteTodo} />
     </div>
   );
 }
